@@ -1,25 +1,32 @@
 import React from "react";
 import { StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
 
-export default function PokemonView({ pokemon }) {
+export default function PokemonView({ pokemon, setFavorites, favorites }) {
+  const clickHandler = () => {
+    setFavorites([...favorites, { pokemon }]);
+    console.log(favorites);
+  };
+
+  const containPokemon = () => {
+    if (pokemon === "") {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {/* {pokemon.map((p) => { */}
-      {/* return ( */}
-      <View style={styles.container}>
-        <Text style={styles.boldText}>Name: {pokemon.name}</Text>
-        <Text style={styles.boldText}>Weight: {pokemon.weight}</Text>
-        <Image
-          source={{
-            uri: `${pokemon.img}`,
-            width: 160,
-            height: 160,
-          }}
-        />
-        <Text style={styles.boldText}>Type: {pokemon.type}</Text>
-      </View>
-      {/* ); */}
-      {/* })} */}
+      <Text style={styles.boldText}>{pokemon.name}</Text>
+      <Text style={styles.boldText}>Type: {pokemon.type}</Text>
+      <Image
+        source={{
+          uri: `${pokemon.img}`,
+          width: 160,
+          height: 160,
+        }}
+      />
+      <Button title="Add to " onPress={clickHandler} />
     </View>
   );
 }
