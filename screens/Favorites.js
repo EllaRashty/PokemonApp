@@ -6,20 +6,26 @@ import {
   Button,
   Image,
   ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+  Modal,
 } from "react-native";
+import { ModalPicker } from "../components/ModalPicker";
 export default function Favorites({ navigation }) {
   const [fav, setFav] = useState([]);
   const [filter, setFilter] = useState([]);
-  const [input, setInput] = useState("all");
+  const [choose, setChoose] = useState("Select type");
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     setFav(navigation.getParam("favorites"));
+
     filterHandler();
-  }, [fav,input]);
+  }, [fav, choose]);
 
   const filterHandler = () => {
     //   const sorti = await NativeAsyncLocalStorage
-    switch (input) {
+    switch (choose) {
       case "normal":
         setFilter(fav.filter((item) => item.pokemon.type === "normal"));
         break;
@@ -41,10 +47,37 @@ export default function Favorites({ navigation }) {
   const deleteHandler = () => {
     setFav(fav.filter((item) => item.pokemon.id !== fav.pokemon.id));
   };
+
+  const changeModalVisibility = (bool) => {
+    setIsModalVisible(bool);
+  };
+
+  const setData = (option) => {
+    setChoose(option);
+  };
   console.log(fav);
 
   return (
     <View>
+      <SafeAreaView style={styles.select}>
+        <TouchableOpacity
+          style={styles.touchableOpacity}
+          onPress={() => changeModalVisibility(true)}
+        >
+          <Text>{choose}</Text>
+        </TouchableOpacity>
+        <Modal
+          transparent={true}
+          animationType="fade"
+          visible={isModalVisible}
+          nRequestClose={() => changeModalVisibility(false)}
+        >
+          <ModalPicker
+            changeModalVisibility={changeModalVisibility}
+            setData={setData}
+          />
+        </Modal>
+      </SafeAreaView>
       <ScrollView>
         {filter.map((p) => (
           <View style={styles.item} key={p.pokemon.id}>
@@ -72,7 +105,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
+
     paddingTop: 40,
+  },
+  select: {
+    padding: 20,
+    justifyContent: "center",
   },
   item: {
     marginTop: 24,
@@ -85,5 +123,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
+  },
+  touchableOpacity: {
+    backgroundColor: "azure",
+    alignSelf: "stretch",
+    paddingHorizontal: 20,
   },
 });

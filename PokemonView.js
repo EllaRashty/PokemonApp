@@ -1,10 +1,40 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, TextInput, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  Image,
+  Alert,
+} from "react-native";
 
 export default function PokemonView({ pokemon, setFavorites, favorites }) {
   const clickHandler = () => {
-    setFavorites([...favorites, { pokemon }]);
+    addToFavorites();
     console.log(favorites);
+  };
+
+  const pokemonNotFound = () => {
+    let temp = true;
+    favorites.map((obj) => {
+      if (obj.pokemon.id === pokemon.id) {
+        console.log(obj.pokemon.id);
+        console.log(pokemon.id);
+        Alert.alert(`${obj.pokemon.id}`, ` ${pokemon.id}`, [
+          { text: "ok", onPress: () => console.log("alert closed") },
+        ]);
+        temp = false;
+      }
+    });
+    return temp;
+  };
+
+  const addToFavorites = () => {
+    console.log(pokemonNotFound());
+    if (pokemonNotFound()) {
+      setFavorites([...favorites, { pokemon }]);
+    }
   };
 
   const containPokemon = () => {
