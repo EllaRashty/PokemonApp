@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Modal,
+  Switch,
 } from "react-native";
 import { ModalPicker } from "../components/ModalPicker";
 export default function Favorites({ navigation }) {
@@ -17,11 +18,30 @@ export default function Favorites({ navigation }) {
   const [choose, setChoose] = useState("Select type");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const [sort, setSort] = useState([]);
+  const [isSorted, setIsSorted] = useState("false");
+
+  const [types, setTypes] = useState({});
+
   useEffect(() => {
     setFav(navigation.getParam("favorites"));
-
+    getJsonData();
     filterHandler();
   }, [fav, choose]);
+
+  const getJsonData = () => {
+    fetch(`https://pokeapi.co/api/v2/type/`, {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(`JSON ---> ${res.results[0].name}`);
+        setTypes(res.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const filterHandler = () => {
     //   const sorti = await NativeAsyncLocalStorage
@@ -39,6 +59,31 @@ export default function Favorites({ navigation }) {
         setFilter(fav);
         break;
     }
+  };
+
+  const sortSwitch = () => {
+    if (!isSorted) {
+      // setSort(fav);
+      setSort([...fav]);
+      setFilter(sortHandler());
+    } else {
+      setFilter(fav);
+    }
+  };
+
+  const changeSortStatus = () => {
+    sortSwitch();
+    setIsSorted(!isSorted);
+    console.log(`isSorted change to: ${isSorted}`);
+  };
+
+  const sortHandler = () => {
+    sort.sort(function (a, b) {
+      if (a.pokemon.type < b.pokemon.type) return -1;
+      if (a.pokemon.type > b.pokemon.type) return 1;
+      return 0;
+    });
+    return sort;
   };
 
   const pressHandler = () => {
@@ -78,6 +123,12 @@ export default function Favorites({ navigation }) {
           />
         </Modal>
       </SafeAreaView>
+      <Switch
+        trackColor={{ false: "grey", true: "blue" }}
+        thumbColor={isSorted ? "#f4f3f4" : "#f4f3f4"}
+        onValueChange={changeSortStatus}
+        value={isSorted}
+      />
       <ScrollView>
         {filter.map((p) => (
           <View style={styles.item} key={p.pokemon.id}>
