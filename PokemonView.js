@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Button, Image, Alert } from "react-native";
 
 export default function PokemonView({
@@ -11,6 +11,7 @@ export default function PokemonView({
     addToFavorites();
     console.log(favorites);
   };
+  const [rotateDeg, setRotateDeg] = useState(0);
 
   const pokemonNotFound = () => {
     let temp = true;
@@ -34,6 +35,10 @@ export default function PokemonView({
     }
   };
 
+  const rotateImg = (deg) => {
+    setRotateDeg(rotateDeg + deg);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.xButton}>
@@ -46,12 +51,18 @@ export default function PokemonView({
       <Text style={styles.boldText}>Name: {pokemon.name}</Text>
       <Text style={styles.boldText}>Type: {pokemon.type}</Text>
       <Image
+        style={{ transform: [{ rotate: `${rotateDeg}deg` }] }}
         source={{
           uri: `${pokemon.img}`,
           width: 160,
           height: 160,
         }}
       />
+      <View style={styles.rotateButton}>
+        <Button title="<" onPress={() => rotateImg(10)} />
+        <Text style={styles.buttonSpace}>Rotate</Text>
+        <Button title=">" onPress={() => rotateImg(-10)} />
+      </View>
       <Button title="Add to  ♥" onPress={() => clickHandler()} />
     </View>
   );
@@ -82,6 +93,16 @@ const styles = StyleSheet.create({
   xButton: {
     position: "absolute",
     top: 0,
-    left:3,
+    right: 3,
+  },
+  rotateButton: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  buttonSpace: {
+    fontWeight: "bold",
+    margin: 10,
+    padding: 20,
   },
 });
