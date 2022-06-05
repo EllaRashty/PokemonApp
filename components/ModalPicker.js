@@ -8,7 +8,6 @@ import {
   ScrollView,
 } from "react-native";
 
-const OPTIONS = ["Select type", "normal", "grass", "electric"];
 const WIDTH = Dimensions.get("window").width;
 const HEIGHT = Dimensions.get("window").height;
 
@@ -18,14 +17,14 @@ const ModalPicker = (props) => {
     props.setData(option);
   };
 
-  const option = OPTIONS.map((item, index) => {
+  const option = props.types.map((item, index) => {
     return (
       <TouchableOpacity
         style={styles.option}
         key={index}
-        onPress={() => onPressItem(item)}
+        onPress={() => onPressItem(item.name)}
       >
-        <Text style={styles.text}>{item}</Text>
+        <Text style={styles.text}>{item.name}</Text>
       </TouchableOpacity>
     );
   });
@@ -58,8 +57,8 @@ const styles = StyleSheet.create({
   },
   option: {
     alignItems: "center",
-    padding:15,
-    borderColor:"red",
+    padding: 15,
+    borderColor: "red",
   },
   text: {
     // margin: 10,

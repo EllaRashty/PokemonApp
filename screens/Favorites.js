@@ -43,27 +43,22 @@ export default function Favorites({ navigation }) {
       });
   };
 
+  const clear = () => {
+    setChoose("Select type");
+    setFilter(fav);
+  };
+
   const filterHandler = () => {
     //   const sorti = await NativeAsyncLocalStorage
-    switch (choose) {
-      case "normal":
-        setFilter(fav.filter((item) => item.pokemon.type === "normal"));
-        break;
-      case "grass":
-        setFilter(fav.filter((item) => item.pokemon.type === "grass"));
-        break;
-      case "electric":
-        setFilter(fav.filter((item) => item.pokemon.type === "electric"));
-        break;
-      default:
-        setFilter(fav);
-        break;
+    if (choose !== "Select type") {
+      setFilter(fav.filter((item) => item.pokemon.type === choose));
+    } else {
+      clear();
     }
   };
 
   const sortSwitch = () => {
     if (!isSorted) {
-      // setSort([...fav]);
       setFilter(sortHandler());
     } else {
       setFilter(fav);
@@ -87,7 +82,6 @@ export default function Favorites({ navigation }) {
   const pressHandler = () => {
     navigation.goBack();
   };
-
 
   const changeModalVisibility = (bool) => {
     setIsModalVisible(bool);
@@ -115,6 +109,7 @@ export default function Favorites({ navigation }) {
           <ModalPicker
             changeModalVisibility={changeModalVisibility}
             setData={setData}
+            types={types}
           />
         </Modal>
       </SafeAreaView>
@@ -125,7 +120,9 @@ export default function Favorites({ navigation }) {
           thumbColor={isSorted ? "#f4f3f4" : "#f4f3f4"}
           onValueChange={() => changeSortStatus()}
           value={isSorted}
+          style={{ marginLeft: 180 }}
         />
+        <Button title="Clear" onPress={clear} />
       </View>
 
       <ScrollView>
@@ -172,7 +169,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     padding: 10,
     paddingTop: 0,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     backgroundColor: "#eee",
     borderRadius: 10,
   },
