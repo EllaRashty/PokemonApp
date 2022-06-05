@@ -27,6 +27,7 @@ export default function Favorites({ navigation }) {
     setFav(navigation.getParam("favorites"));
     getJsonData();
     filterHandler();
+    setSort([...fav]);
   }, [fav, choose]);
 
   const getJsonData = () => {
@@ -35,7 +36,6 @@ export default function Favorites({ navigation }) {
     })
       .then((response) => response.json())
       .then((res) => {
-        console.log(`JSON ---> ${res.results[0].name}`);
         setTypes(res.results);
       })
       .catch((error) => {
@@ -63,8 +63,7 @@ export default function Favorites({ navigation }) {
 
   const sortSwitch = () => {
     if (!isSorted) {
-      // setSort(fav);
-      setSort([...fav]);
+      // setSort([...fav]);
       setFilter(sortHandler());
     } else {
       setFilter(fav);
@@ -74,7 +73,6 @@ export default function Favorites({ navigation }) {
   const changeSortStatus = () => {
     sortSwitch();
     setIsSorted(!isSorted);
-    console.log(`isSorted change to: ${isSorted}`);
   };
 
   const sortHandler = () => {
@@ -89,9 +87,7 @@ export default function Favorites({ navigation }) {
   const pressHandler = () => {
     navigation.goBack();
   };
-  const deleteHandler = () => {
-    setFav(fav.filter((item) => item.pokemon.id !== fav.pokemon.id));
-  };
+
 
   const changeModalVisibility = (bool) => {
     setIsModalVisible(bool);
@@ -100,10 +96,9 @@ export default function Favorites({ navigation }) {
   const setData = (option) => {
     setChoose(option);
   };
-  console.log(fav);
 
   return (
-    <View>
+    <View style={styles.container}>
       <SafeAreaView style={styles.select}>
         <TouchableOpacity
           style={styles.touchableOpacity}
@@ -123,19 +118,23 @@ export default function Favorites({ navigation }) {
           />
         </Modal>
       </SafeAreaView>
-      <Switch
-        trackColor={{ false: "grey", true: "blue" }}
-        thumbColor={isSorted ? "#f4f3f4" : "#f4f3f4"}
-        onValueChange={changeSortStatus}
-        value={isSorted}
-      />
+      <View style={styles.switchContainer}>
+        <Text>Sort:</Text>
+        <Switch
+          trackColor={{ false: "grey", true: "blue" }}
+          thumbColor={isSorted ? "#f4f3f4" : "#f4f3f4"}
+          onValueChange={() => changeSortStatus()}
+          value={isSorted}
+        />
+      </View>
+
       <ScrollView>
         {filter.map((p) => (
           <View style={styles.item} key={p.pokemon.id}>
             <Text style={styles.boldText}>{p.pokemon.name}</Text>
-            <Text>type: {p.pokemon.type}</Text>
-            <Text>weight: {p.pokemon.weight}</Text>
-            <Text>height: {p.pokemon.height}</Text>
+            <Text>Type: {p.pokemon.type}</Text>
+            <Text>Weight: {p.pokemon.weight}</Text>
+            <Text>Height: {p.pokemon.height}</Text>
             <Image
               source={{
                 uri: `${p.pokemon.img}`,
@@ -143,7 +142,6 @@ export default function Favorites({ navigation }) {
                 height: 120,
               }}
             />
-            <Button title="delete" onPress={deleteHandler} />
           </View>
         ))}
       </ScrollView>
@@ -155,18 +153,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingHorizontal: 20,
-
-    paddingTop: 40,
+    paddingHorizontal: 10,
+    paddingTop: 5,
+  },
+  switchContainer: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    paddingHorizontal: 30,
+    marginHorizontal: 10,
   },
   select: {
-    padding: 20,
+    padding: 5,
+    paddingHorizontal: 20,
     justifyContent: "center",
   },
   item: {
-    marginTop: 24,
+    margin: 10,
+    marginTop: 5,
     padding: 10,
-    backgroundColor: "#ffff",
+    paddingTop: 0,
+    paddingHorizontal: 20,
+    backgroundColor: "#eee",
+    borderRadius: 10,
   },
   boldText: {
     fontWeight: "bold",
@@ -179,5 +187,9 @@ const styles = StyleSheet.create({
     backgroundColor: "azure",
     alignSelf: "stretch",
     paddingHorizontal: 20,
+    padding: 10,
+    borderRadius: 10,
+    borderColor: "black",
+    borderWidth: 1,
   },
 });

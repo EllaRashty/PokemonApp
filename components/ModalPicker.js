@@ -2,16 +2,13 @@ import React from "react";
 import {
   StyleSheet,
   View,
-  Button,
-  Image,
-  SafeAreaView,
   Text,
   TouchableOpacity,
   Dimensions,
   ScrollView,
 } from "react-native";
 
-const OPTIONS = ["all", "normal", "grass", "electric"];
+const OPTIONS = ["Select type", "normal", "grass", "electric"];
 const WIDTH = Dimensions.get("window").width;
 const HEIGHT = Dimensions.get("window").height;
 
@@ -34,7 +31,7 @@ const ModalPicker = (props) => {
   });
   return (
     <TouchableOpacity
-      onPress={() => changeModalVisibility(false)}
+      onPress={() => props.changeModalVisibility(false)}
       style={styles.container}
     >
       <View style={[styles.modal, { width: WIDTH - 20, height: HEIGHT / 2 }]}>
@@ -54,15 +51,19 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   modal: {
-    backgroundColor: "pink",
+    backgroundColor: "#eee",
     borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
   option: {
-    alignItems: "flex-start",
+    alignItems: "center",
+    padding:15,
+    borderColor:"red",
   },
   text: {
-    margin: 20,
-    fontSize: 20,
+    // margin: 10,
+    fontSize: 15,
     fontWeight: "bold",
   },
 });

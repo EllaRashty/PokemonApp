@@ -1,15 +1,12 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  Image,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, View, Button, Image, Alert } from "react-native";
 
-export default function PokemonView({ pokemon, setFavorites, favorites }) {
+export default function PokemonView({
+  pokemon,
+  setFavorites,
+  favorites,
+  setShowDetails,
+}) {
   const clickHandler = () => {
     addToFavorites();
     console.log(favorites);
@@ -19,11 +16,11 @@ export default function PokemonView({ pokemon, setFavorites, favorites }) {
     let temp = true;
     favorites.map((obj) => {
       if (obj.pokemon.id === pokemon.id) {
-        console.log(obj.pokemon.id);
-        console.log(pokemon.id);
-        Alert.alert(`${obj.pokemon.id}`, ` ${pokemon.id}`, [
-          { text: "ok", onPress: () => console.log("alert closed") },
-        ]);
+        Alert.alert(
+          `Can't Add Pokemon`,
+          `${pokemon.name} already in favorites list `,
+          [{ text: "ok", onPress: () => console.log("alert closed") }]
+        );
         temp = false;
       }
     });
@@ -37,17 +34,16 @@ export default function PokemonView({ pokemon, setFavorites, favorites }) {
     }
   };
 
-  const containPokemon = () => {
-    if (pokemon === "") {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.boldText}>{pokemon.name}</Text>
+      <View style={styles.xButton}>
+        <Button
+          title="X"
+          onPress={() => setShowDetails(false)}
+          style={styles.button}
+        />
+      </View>
+      <Text style={styles.boldText}>Name: {pokemon.name}</Text>
       <Text style={styles.boldText}>Type: {pokemon.type}</Text>
       <Image
         source={{
@@ -56,16 +52,21 @@ export default function PokemonView({ pokemon, setFavorites, favorites }) {
           height: 160,
         }}
       />
-      <Button title="Add to " onPress={clickHandler} />
+      <Button title="Add to  ♥" onPress={() => clickHandler()} />
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#eee",
     alignItems: "flex-start",
     alignItems: "center",
     justifyContent: "center",
+    padding: 30,
+    margin: 10,
+    paddingTop: 0,
+    paddingHorizontal: 50,
+    borderRadius: 10,
   },
   boldText: {
     fontWeight: "bold",
@@ -74,11 +75,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "#777",
+  button: {
     padding: 8,
-    margin: 10,
-    width: 200,
+    margin: 150,
+  },
+  xButton: {
+    position: "absolute",
+    top: 0,
+    left:3,
   },
 });
