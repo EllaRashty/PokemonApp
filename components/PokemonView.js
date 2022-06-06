@@ -44,6 +44,7 @@ export default function PokemonView({
       <View style={styles.xButton}>
         <Button
           title="X"
+          color="tomato"
           onPress={() => setShowDetails(false)}
           style={styles.button}
         />
@@ -59,11 +60,16 @@ export default function PokemonView({
         }}
       />
       <View style={styles.rotateButton}>
-        <Button title="<" onPress={() => rotateImg(10)} />
+        <Button color="#fbfbfb" title="⬅️" onPress={() => rotateImg(10)} />
         <Text style={styles.buttonSpace}>Rotate</Text>
-        <Button title=">" onPress={() => rotateImg(-10)} />
+        <Button
+          color="#fbfbfb"
+          borderRadius={20}
+          title="➡️"
+          onPress={() => rotateImg(-10)}
+        />
       </View>
-      <Button title="Add to  ♥" onPress={() => clickHandler()} />
+      <Button color="green" title="Add to  ♥" onPress={() => clickHandler()} />
     </View>
   );
 }
@@ -76,6 +82,7 @@ const styles = StyleSheet.create({
     padding: 30,
     margin: 10,
     paddingTop: 0,
+    marginTop:20,
     paddingHorizontal: 50,
     borderRadius: 10,
   },

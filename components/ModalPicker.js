@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     borderColor: "red",
   },
   text: {
-    // margin: 10,
     fontSize: 15,
     fontWeight: "bold",
   },

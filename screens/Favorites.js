@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { ModalPicker } from "../components/ModalPicker";
 export default function Favorites({ navigation }) {
-  const [fav, setFav] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [filter, setFilter] = useState([]);
   const [choose, setChoose] = useState("Select type");
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -24,11 +24,11 @@ export default function Favorites({ navigation }) {
   const [types, setTypes] = useState({});
 
   useEffect(() => {
-    setFav(navigation.getParam("favorites"));
+    setFavorites(navigation.getParam("favorites"));
     getJsonData();
     filterHandler();
-    setSort([...fav]);
-  }, [fav, choose]);
+    setSort([...favorites]);
+  }, [favorites, choose]);
 
   const getJsonData = () => {
     fetch(`https://pokeapi.co/api/v2/type/`, {
@@ -45,13 +45,12 @@ export default function Favorites({ navigation }) {
 
   const clear = () => {
     setChoose("Select type");
-    setFilter(fav);
+    setFilter(favorites);
   };
 
   const filterHandler = () => {
-    //   const sorti = await NativeAsyncLocalStorage
     if (choose !== "Select type") {
-      setFilter(fav.filter((item) => item.pokemon.type === choose));
+      setFilter(favorites.filter((item) => item.pokemon.type === choose));
     } else {
       clear();
     }
@@ -61,7 +60,7 @@ export default function Favorites({ navigation }) {
     if (!isSorted) {
       setFilter(sortHandler());
     } else {
-      setFilter(fav);
+      setFilter(favorites);
     }
   };
 
@@ -142,7 +141,7 @@ export default function Favorites({ navigation }) {
           </View>
         ))}
       </ScrollView>
-      <Button title="Back to search" onPress={pressHandler} />
+      <Button color="tomato" title="Back to search" onPress={pressHandler} />
     </View>
   );
 }

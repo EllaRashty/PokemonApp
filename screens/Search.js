@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button, TextInput, Alert } from "react-native";
-import PokemonView from "../PokemonView";
+import PokemonView from "../components/PokemonView";
 
 export default function Search({ navigation }) {
   const [name, setName] = useState("");
@@ -13,16 +13,11 @@ export default function Search({ navigation }) {
     if (name != "") {
       getJsonData();
     }
-    console.log(favorites);
-    // getLocalFavorites();
   };
 
   const pressHandler = () => {
-    console.log(`here${favorites}`);
-    // saveLocalFavorites();
     navigation.navigate("FavoritesPage", { favorites: favorites });
   };
-  console.log(favorites);
 
   const getJsonData = () => {
     fetch(
@@ -54,28 +49,13 @@ export default function Search({ navigation }) {
       });
   };
 
-  // const saveLocalFavorites = () => {
-  //   localStorage.setItem("favorites", JSON.stringify(favorites));
-  // };
-
-  // const getLocalFavorites = () => {
-  //   if (localStorage.getItem("favorites") === null) {
-  //     localStorage.setItem("favorites", JSON.stringify([]));
-  //   } else {
-  //     let favoritesLocal = localStorage.getItem(
-  //       "favorites",
-  //       JSON.stringify(favorites)
-  //     );
-  //     console.log(`local: ${favoritesLocal}`);
-  //   }
-  // };
   return (
     <View style={styles.container}>
       <Text style={styles.boldText}>Search Pokemon:</Text>
       <TextInput
         multiline
         style={styles.input}
-        placeholder="bulbasaur "
+        placeholder="Bulbasaur "
         onChangeText={(value) => setName(value)}
       />
       <View style={styles.buttonContainer}>
@@ -91,7 +71,7 @@ export default function Search({ navigation }) {
       ) : null}
       <StatusBar style="auto" />
       <View style={styles.bottomContainer}>
-        <Button title="Go to favorites" onPress={pressHandler} />
+        <Button title="⭐️  Go to Favorites  ⭐️" onPress={pressHandler} />
       </View>
     </View>
   );
